@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../services/login.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
   public formLogin : FormGroup = new FormGroup({})
 
-  constructor(private loginService : LoginService, private formBuilder: FormBuilder) {
+  constructor(private loginService : LoginService, private formBuilder: FormBuilder, private router : Router) {
     // TODO : Sécuriser les champs
     this.formLogin = this.formBuilder.group({
       login: ['0605040302', Validators.required],
@@ -29,10 +30,13 @@ export class LoginComponent {
   }
 
   public log() {
-    this.loginService.login(this.formLogin.controls["login"].value, this.formLogin.controls["pwd"].value).subscribe((data : any) => {
-      console.log("success!")
-      console.log(data)
-    });
+    if(this.formLogin.valid) {
+      this.loginService.login(this.formLogin.controls["login"].value, this.formLogin.controls["pwd"].value).subscribe((data : any) => {
+        this.loginService.setUserToken(data.authToken);
+        this.formLogin.reset();
+        this.router.navigate(['/home']);
+      });
+    }
   }
 
 }
