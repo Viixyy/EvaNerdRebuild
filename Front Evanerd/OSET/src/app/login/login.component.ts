@@ -32,7 +32,7 @@ export class LoginComponent {
   public log() {
     if(this.formLogin.valid) {
       this.loginService.login(this.formLogin.controls["login"].value, this.formLogin.controls["pwd"].value).subscribe((data : any) => {
-        this.loginService.setUserToken(data.authToken);
+        this.loginService.setUserData(data);
         this.formLogin.reset();
         this.router.navigate(['/home']);
       });

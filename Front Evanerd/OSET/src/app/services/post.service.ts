@@ -9,24 +9,29 @@ import { LoginService } from './login.service';
 export class PostService {
     private url : string;
     private http : HttpClient;
-    private userData = new BehaviorSubject<any>(null);
-    private header : Headers = new Headers();
+    private header = {};
     
     constructor(private myHttp : HttpClient, private loginService : LoginService) {
-        this.url = "https://evanerds.fr/api/v1"
+        this.url = "https://www.evanerds.fr/api/v1";
         this.http = myHttp;
+        this.header = {
+            'authToken': this.loginService.getUserToken()
+        };
     }
 
-    public createAuthToken(headers : Headers) {
-        let authToken = this.loginService.getUserToken();
-        if(authToken) headers.append("authToken", authToken);
+    public updateToken() {
+        this.header = {
+            'authToken': this.loginService.getUserToken()
+        };
     }
 
     public getAllPosts() {
-        let rqte = this.url + '/posts'
-        this.createAuthToken(this.header);
-        return this.http.get(rqte, {
-            headers: new HttpHeaders(this.header)
-        })
+        let rqte = this.url + '/posts';
+        this.updateToken();
+        const requestOptions = {
+            headers : new HttpHeaders(this.header)
+        }
+        console.log(requestOptions)
+        return this.http.get(rqte, requestOptions);
     }
 }

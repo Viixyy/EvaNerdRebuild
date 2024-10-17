@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 export class LoginService {
     private url : string;
     private http : HttpClient;
-    private userData = new BehaviorSubject<any>(null);
+    private header : Headers = new Headers();
     
     constructor(private myHttp : HttpClient) {
-        this.url = "https://evanerds.fr/api/v1"
-        this.http = myHttp;
+      this.url = "https://www.evanerds.fr/api/v1"
+      this.http = myHttp;
     }
 
     public login(tel : string, pwd : string) {
@@ -20,11 +19,36 @@ export class LoginService {
       return this.http.post(rqte, {});
     }
 
-    public setUserToken(token : any) {
-      localStorage.setItem("token", token);
+    public logout() {
+      let rqte = this.url + '/users/logout';
+      this.header.append("authToken", this.getUserToken());
+      const requestOptions = {
+        headers : new HttpHeaders(this.header)
+      };
+      return this.http.post(rqte, {}, requestOptions)
+    }
+
+    public setUserData(data : any) {
+      console.log(data)
+      localStorage.setItem("token", data.authToken);
+      localStorage.setItem("firstName", data.user.firstName);
+      localStorage.setItem("lastName", data.user.lastName);
+      localStorage.setItem("photo", data.user.photo);
     }
 
     public getUserToken() {
-      return localStorage.getItem("token");
+      return (localStorage.getItem("token") || '{}');
+    }
+
+    public getUserFirstName() {
+      return (localStorage.getItem("firstName") || '{}');
+    }
+
+    public getUserLastName() {
+      return (localStorage.getItem("lastName") || '{}');
+    }
+
+    public getUserPhoto() {
+      return (localStorage.getItem("photo") || '{}');
     }
 }

@@ -1,17 +1,75 @@
 <div class="container position relative">
-    <div class="row m-0 p-2 align-items-center ">
-        <div class="col-sm-1 col-lg-2">
-            <mat-card class="mx-16" appearance="outlined">
+    <div class="row m-0 p-2 align-items-center flex-nowrap">
+        <!-- Column 1 : User's informations -->
+        <!-- Disable for mobile -->  
+        <div class="col-lg-4 mx-5 mt-3 fixed-top d-none d-md-block">
+            <mat-card class="mt-2" appearance="outlined">
+                <mat-card-header>
+                    <img mat-card-avatar [src]="photo">
+                    <p class="mt-2 mx-2">{{firstName}} {{lastName}}</p>
+                    <span style="flex: 1 1 auto;"></span>
+                    <button mat-icon-button>
+                        <mat-icon class="text-dark mb-2" fontIcon="settings"></mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="logout()">
+                        <mat-icon class="text-dark mb-2" fontIcon="logout"></mat-icon>
+                    </button>
+                </mat-card-header>
                 <mat-card-content>
-                    <p> salut >:[</p>
+                    <button mat-button>
+                        <mat-icon class="text-dark" fontIcon="event"></mat-icon>
+                        <p class="mt-3 text-dark">Agenda</p>
+                    </button>
+                    <button mat-button>
+                        <mat-icon class="text-dark" fontIcon="people"></mat-icon>
+                        <p class="mt-3 text-dark">Appels</p>
+                    </button>
                 </mat-card-content>
             </mat-card>
         </div>
     </div>
-    <div class="row m-0 d-flex p-2 justify-content-center align-items-center">
+    <!-- Column 2 : Posts -->
+    <div class="row m-0 d-flex p-2 justify-content-center align-items-center flex-nowrap">
         <div class="col-xl-4" style="max-height: 95vh;">
             <app-post></app-post>
         </div>
-    </div>    
+    </div>
+    <!-- Column 3 : Search & Events -->
+    <!-- Disable for mobile -->    
+    <div class="col-lg-4 mx-4 mt-3 fixed-top d-none d-md-block" style="left: unset !important;">
+        <mat-card class="mt-2" appearance="outlined">
+            <mat-card-header>
+            </mat-card-header>
+            <mat-card-content class="d-flex align-items-center">
+                <mat-icon class="text-dark" fontIcon="search"></mat-icon>
+                <input type="text" class="form-control form-input mx-2" placeholder="Chercher">
+            </mat-card-content>
+        </mat-card>
+    </div>   
 </div>
+<!-- Navbar -->
+<!-- Disable for bigger screens --> 
+<mat-toolbar class="d-block d-md-none fixed-bottom" style="z-index: 1; border-top : 1px solid black" appearance="outlined">
+    <button mat-icon-button>
+        <mat-icon fontIcon="home"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon fontIcon="event"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon color="primary" fontIcon="people"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon fontIcon="search"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon fontIcon="email"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon fontIcon="settings"></mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon fontIcon="logout" (click)="logout()"></mat-icon>
+    </button>
+</mat-toolbar>
 
